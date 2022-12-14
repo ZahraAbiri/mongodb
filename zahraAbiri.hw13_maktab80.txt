@@ -1,0 +1,33 @@
+
+db.movies.find({genres: "History"}, {title: 1})
+db.movies.find({year: {$gt: 1990}}, {title: 1, _id: 0, imdb: {rating: 1}})
+db.movies.aggregate([
+    {$sortByCount: "$languages"}
+])
+db.movies.find({}, {_id: 0, title: 1}).sort({num_mflix_comments: -1}).limit(1)
+
+
+db.comments.distinct("name", {}, {moveis: {title: "The Taking of Pelham 1 2 3"}})
+
+db.movies.aggregate([{$sortByCount: "$cast"}])
+
+
+
+
+db.movies.aggregate([{
+    $group: {
+        _id: "$genres",
+    }
+},])
+db.movies.aggregate([
+
+    {
+        $group: {
+            _id: "$genres",
+
+        },
+    },
+
+
+])
+
