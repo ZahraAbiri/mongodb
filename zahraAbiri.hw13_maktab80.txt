@@ -24,14 +24,10 @@ db.movies.aggregate([{
 
 
 
-db.movies.aggregate([
 
-    {
-        $group: {
-            _id: "$genres"
-        }
-    },
-
-    {"$match": {cast: 1}}
-])
-
+db.movies.aggregate(
+    { $project : {
+        genres:1,cast:1
+    }},
+    { $unwind : "$cast" }
+);
