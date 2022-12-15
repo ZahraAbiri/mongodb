@@ -15,19 +15,23 @@ db.movies.aggregate([{$sortByCount: "$cast"}])
 
 
 db.movies.aggregate([{
+
     $group: {
-        _id: "$genres",
+        _id: "$languages", avgAmount: {$avg: "$imdb.rating"}
     }
 },])
+
+
+
+
 db.movies.aggregate([
 
     {
         $group: {
-            _id: "$genres",
-
-        },
+            _id: "$genres"
+        }
     },
 
-
+    {"$match": {cast: 1}}
 ])
 
