@@ -1,33 +1,46 @@
 
 db.movies.find({genres: "History"}, {title: 1})
 db.movies.find({year: {$gt: 1990}}, {title: 1, _id: 0, imdb: {rating: 1}})
-db.movies.aggregate([
+//db.movies.aggregate([
+//    {$sortByCount: "$languages"}
+//])
+db.movies.aggregate([{$unwind : "$languages"},
     {$sortByCount: "$languages"}
 ])
+
 db.movies.find({}, {_id: 0, title: 1}).sort({num_mflix_comments: -1}).limit(1)
 
 
 db.comments.distinct("name", {}, {moveis: {title: "The Taking of Pelham 1 2 3"}})
 
-db.movies.aggregate([{$sortByCount: "$cast"}])
+//db.movies.aggregate([{$sortByCount: "$cast"}])
+db.movies.aggregate([{ $unwind : "$cast"},{$sortByCount: "$cast"}])
 
 
 
+//db.movies.aggregate([{
 
-db.movies.aggregate([{
+  //  $group: {
+  //      _id: "$languages", avgAmount: {$avg: "$imdb.rating"}
+  //  }
+//},])
 
-    $group: {
+db.movies.aggregate([{$unwind : "$languages"},{ $group: {
         _id: "$languages", avgAmount: {$avg: "$imdb.rating"}
-    }
-},])
+    }}])
 
 
 
-
+//db.movies.aggregate(
+ //   { $project : {
+  //      genres:1,cast:1
+  //  }},
+  //  { $unwind : "$cast" }
+//);
 
 db.movies.aggregate(
     { $project : {
-        genres:1,cast:1
+        genres:1,cast:1,_id:0
     }},
-    { $unwind : "$cast" }
+    { $unwind : "$cast" }, { $unwind : "$genres" }
 );
